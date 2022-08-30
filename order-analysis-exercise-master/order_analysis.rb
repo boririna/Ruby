@@ -17,7 +17,7 @@ class OrderAnalysis
         # value.print_info
       end
 
-      @customers_table.each do |customer_id, value|
+      @customers_table.each_pair do |customer_id, value|
         value.print_order_info
       end
     # all_customers
@@ -46,13 +46,6 @@ class OrderAnalysis
     location = parts[3]
 
     @customers_table[customer_id] = Customer.new(customer_id, first_name, last_name, location)
-
-    # a.print_info
-    # b = []
-    # b << a.first_name
-    # puts b
-    # @customers_list << a.customer_id
-    # puts @customers_list
   end
 
   def all_customers
