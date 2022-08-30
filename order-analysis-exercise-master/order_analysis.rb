@@ -3,10 +3,25 @@ require_relative './customer.rb'
 
 class OrderAnalysis
   CSV_DELIMITER = ";"
+  def initialize
+    @customers_table = {}
+    @orders_table = {}
+  end
 
   def analyze
     analyze_customers
     analyze_orders
+    @orders_table.each_pair do |customer_id, value|
+        @customers_table[customer_id].attach_order(value)
+        # puts "#{key} #{value}"
+        # value.print_info
+      end
+
+      @customers_table.each do |customer_id, value|
+        value.print_order_info
+      end
+    # all_customers
+    # all_orders
   end
 
   def analyze_customers
@@ -30,7 +45,18 @@ class OrderAnalysis
     last_name = parts[2]
     location = parts[3]
 
-    Customer.new(customer_id, first_name, last_name, location).print_info
+    @customers_table[customer_id] = Customer.new(customer_id, first_name, last_name, location)
+
+    # a.print_info
+    # b = []
+    # b << a.first_name
+    # puts b
+    # @customers_list << a.customer_id
+    # puts @customers_list
+  end
+
+  def all_customers
+    puts @customers_table
   end
 
   def analyze_orders
@@ -53,7 +79,11 @@ class OrderAnalysis
     item = parts[1]
     price = parts[2]
 
-    Order.new(customer_id, item, price).print_info
+    @orders_table[customer_id] = Order.new(customer_id, item, price)
+  end
+
+  def all_orders
+    puts @orders_table
   end
 end
 
