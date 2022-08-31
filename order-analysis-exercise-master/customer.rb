@@ -9,17 +9,18 @@ class Customer
     @last_name = last_name
     @location = location
     @order_list = []
-    @sum = 0
   end
 
-  def attach_order(customer_orders)
-    @order_list = customer_orders
+  def attach_order(customer_order)
+    @order_list << customer_order
   end
 
-  def total
+  def compute_total
+    sum = 0
     @order_list.each do |order|
-      @sum += order.price.delete("€").to_f
+      sum += order.price.delete("€").to_f
     end
+    sum
   end
 
   def print_info
@@ -31,7 +32,7 @@ class Customer
     @order_list.each do |order|
       puts "- #{order.item} #{order.price}"
     end
-    puts "Total: €#{@sum.round(2)}"
+    puts "Total: €#{compute_total.round(2)}"
     puts ""
   end
 end

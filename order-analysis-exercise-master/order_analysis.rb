@@ -3,37 +3,45 @@ require_relative './customer.rb'
 
 class OrderAnalysis
   CSV_DELIMITER = ";"
-  def initialize
-    @customers_table = {}
-    @orders_table = {}
-  end
 
-  def analyze
-    analyze_customers
-    analyze_orders
-    @orders_table.each_pair do |order_id, order_value|
-      @customers_table.each_pair do |customer_id, customer_value|
-        if order_id == customer_id
-          @customers_table[customer_id].attach_order(order_value)
-        end
+  def main
+    # a table: {key: customer_id (int), value: Customer instance}
+    customers_table = load_customers('customers.csv')
+    # a list {list of Orders}
+    orders_list = load_orders('orders.csv')
+    orders_list.each do |order|
+      cust_id = order.customer_id
+      if customers_table.key?(cust_id)
+          customers_table[cust_id].attach_order(order)
+      else
+        puts "Customer not found: #{cust_id}"
       end
     end
 
-    @customers_table.each_pair do |customer_id, value|
-      value.total
-      value.print_order_info
+    customers_table.each_pair do |customer_id, customer|
+      # customer.compute_total
+      customer.print_order_info
     end
     # all_customers
     # all_orders
   end
 
-  def analyze_customers
-    customers_csv = File.read("customers.csv")
+  def load_customers(filename)
+    # Args:
+    #   filename: str, input filename to read from
+    # Returns:
+    #   a table of customers loaded from the file.
+    #   keys are customer ids (int),
+    #   values are Customer instances.
+    customers_csv = File.read(filename)
     customer_lines = customers_csv.split("\n")
 
-    customer_lines.each do |customer_line|
-      extract_customer(customer_line)
+    customers_table = {}
+    customer_lines.each do |line|
+      customer = extract_customer(line)
+      customers_table[customer.customer_id] = customer
     end
+    customers_table
   end
 
   def extract_customer(line)
@@ -48,20 +56,22 @@ class OrderAnalysis
     last_name = parts[2]
     location = parts[3]
 
-    @customers_table[customer_id] = Customer.new(customer_id, first_name, last_name, location)
+    Customer.new(customer_id, first_name, last_name, location)
   end
 
   def all_customers
     puts @customers_table
   end
 
-  def analyze_orders
-    orders_csv = File.read("orders.csv")
+  def load_orders(filename)
+    orders_csv = File.read(filename)
     order_lines = orders_csv.split("\n")
 
+    orders = []
     order_lines.each do |order_line|
-      extract_order(order_line)
+      orders << extract_order(order_line)
     end
+    orders
   end
 
   def extract_order(line)
@@ -75,10 +85,7 @@ class OrderAnalysis
     item = parts[1]
     price = parts[2]
 
-    if !@orders_table.key?(customer_id)
-      @orders_table[customer_id] = []
-    end
-    @orders_table[customer_id] << Order.new(customer_id, item, price)
+    Order.new(customer_id, item, price)
   end
 
   def all_orders
@@ -86,4 +93,4 @@ class OrderAnalysis
   end
 end
 
-OrderAnalysis.new.analyze
+OrderAnalysis.new.main
