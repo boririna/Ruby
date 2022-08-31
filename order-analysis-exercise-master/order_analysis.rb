@@ -11,15 +11,18 @@ class OrderAnalysis
   def analyze
     analyze_customers
     analyze_orders
-    @orders_table.each_pair do |customer_id, value|
-        @customers_table[customer_id].attach_order(value)
-        # puts "#{key} #{value}"
-        # value.print_info
+    @orders_table.each_pair do |order_id, order_value|
+      @customers_table.each_pair do |customer_id, customer_value|
+        if order_id == customer_id
+          @customers_table[customer_id].attach_order(order_value)
+        end
       end
+    end
 
-      @customers_table.each_pair do |customer_id, value|
-        value.print_order_info
-      end
+    @customers_table.each_pair do |customer_id, value|
+      value.total
+      value.print_order_info
+    end
     # all_customers
     # all_orders
   end
@@ -72,11 +75,14 @@ class OrderAnalysis
     item = parts[1]
     price = parts[2]
 
-    @orders_table[customer_id] = Order.new(customer_id, item, price)
+    if !@orders_table.key?(customer_id)
+      @orders_table[customer_id] = []
+    end
+    @orders_table[customer_id] << Order.new(customer_id, item, price)
   end
 
   def all_orders
-    puts @orders_table
+    puts @orders_table.to_s
   end
 end
 
