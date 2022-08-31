@@ -35,4 +35,8 @@ class Customer
     puts "Total: €#{compute_total.round(2)}"
     puts ""
   end
+
+  def print_sorted
+    puts "Customer #{@customer_id}: #{@first_name} #{@last_name} (#{@location}) (€#{compute_total.round(2)})"
+  end
 end

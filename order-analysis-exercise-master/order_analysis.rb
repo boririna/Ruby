@@ -22,6 +22,19 @@ class OrderAnalysis
       # customer.compute_total
       customer.print_order_info
     end
+
+    # make a list of customers from the table
+    # sort the list of customers according to compute_tital
+    customer_list = []
+    customers_table.each_pair do |customer_id, customer|
+      customer_list << customer
+    end
+    # customer_sorted = customer_list.sort { |a, b| -(a.compute_total <=> b.compute_total) }
+    customer_sorted = customer_list.sort_by { |a| -a.compute_total }
+    customer_sorted.each do |customer|
+      customer.print_sorted
+    end
+
     # all_customers
     # all_orders
   end
