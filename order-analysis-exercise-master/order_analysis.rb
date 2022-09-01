@@ -7,7 +7,7 @@ class OrderAnalysis
   def main
     # a table: {key: customer_id (int), value: Customer instance}
     customers_table = load_customers('customers.csv')
-    # a list {list of Orders}
+    # a list [list of Orders]
     orders_list = load_orders('orders.csv')
     orders_list.each do |order|
       cust_id = order.customer_id
@@ -25,18 +25,15 @@ class OrderAnalysis
 
     # make a list of customers from the table
     # sort the list of customers according to compute_tital
-    customer_list = []
+    customers_list = []
     customers_table.each_pair do |customer_id, customer|
-      customer_list << customer
+      customers_list << customer
     end
     # customer_sorted = customer_list.sort { |a, b| -(a.compute_total <=> b.compute_total) }
-    customer_sorted = customer_list.sort_by { |a| -a.compute_total }
-    customer_sorted.each do |customer|
+    customers_sorted = customers_list.sort_by { |a| -a.compute_total }
+    customers_sorted.each do |customer|
       customer.print_sorted
     end
-
-    # all_customers
-    # all_orders
   end
 
   def load_customers(filename)
@@ -72,10 +69,6 @@ class OrderAnalysis
     Customer.new(customer_id, first_name, last_name, location)
   end
 
-  def all_customers
-    puts @customers_table
-  end
-
   def load_orders(filename)
     orders_csv = File.read(filename)
     order_lines = orders_csv.split("\n")
@@ -99,10 +92,6 @@ class OrderAnalysis
     price = parts[2]
 
     Order.new(customer_id, item, price)
-  end
-
-  def all_orders
-    puts @orders_table.to_s
   end
 end
 

@@ -9,7 +9,6 @@ class Order
   end
 
   def print_info
-    # puts self
     puts "Order for Customer #{customer_id}: #{item} #{price}"
   end
 
