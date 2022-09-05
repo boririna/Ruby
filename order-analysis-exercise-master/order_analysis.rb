@@ -1,5 +1,6 @@
 require_relative './order.rb'
 require_relative './customer.rb'
+# ARGV
 
 class OrderAnalysis
   CSV_DELIMITER = ";"
@@ -12,7 +13,7 @@ class OrderAnalysis
     orders_list.each do |order|
       cust_id = order.customer_id
       if customers_table.key?(cust_id)
-          customers_table[cust_id].attach_order(order)
+        customers_table[cust_id].attach_order(order)
       else
         puts "Customer not found: #{cust_id}"
       end

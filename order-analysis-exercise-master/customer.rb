@@ -18,9 +18,11 @@ class Customer
   def compute_total
     sum = 0
     @order_list.each do |order|
+      # can get rid of euro sign in order whol loading the price in initializer
       sum += order.price.delete("€").to_f
     end
     sum
+    # orders.sum { |order| order.price}
   end
 
   def print_info

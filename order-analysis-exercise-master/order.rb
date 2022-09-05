@@ -5,6 +5,7 @@ class Order
   def initialize(customer_id, item, price)
     @customer_id = customer_id
     @item = item
+    # can delete a euro sign here in the price
     @price = price
   end
 
