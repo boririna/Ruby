@@ -37,18 +37,20 @@ lectures.each do |lecture|
 end
 
 exercise_csv_content = File.read('exercises.csv')
+# exercise_csv_content = CSV.read('exercises.csv')
 exercise_lines = exercise_csv_content.split("\n")
 
 exercises = []
-
+# [].find
 exercise_lines[1..-1].each do |line|
   row = line.split(",")
-  exer_student = ""
-  students.each do |student|
-    if row[0] == student.student_id
-      exer_student = student
-    end
-  end
+  # exer_student = ""
+  exer_student = students.find { |student| row[0] == student.student_id }
+  # students.each do |student|
+  #   if row[0] == student.student_id
+  #     exer_student = student
+  #   end
+  # end
   exer_lecture = ""
   lectures.each do |lecture|
     if row[1] == lecture.lecture_id
@@ -60,6 +62,21 @@ exercise_lines[1..-1].each do |line|
   exercises << Exersise.new(exer_student, exer_lecture, exercise_name, percentage_achieved)
 end
 
-exercises[0..20].each do |exercise|
+exercises[0..4].each do |exercise|
   exercise.print_info
+end
+
+# list the students sorted by number of exercises they submitted
+# def exercises_for_students(student)
+# []
+# end
+total_exercises = []
+students_sorted = students.sort_by do |student|
+  total_exercises = exercises.find_all { |ex| ex.exer_student.student_id == student.student_id }
+  -total_exercises.length
+end
+
+
+students_sorted[0..9].each do |s|
+  puts "#{s.full_name}"
 end

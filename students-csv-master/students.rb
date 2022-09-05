@@ -9,4 +9,8 @@ class Student
   def print_info
     puts "Student(#{student_id}): #{full_name}"
   end
+
+  # def print_sorted
+  #   puts "Student(#{student_id}): #{full_name}"
+  # end
 end
