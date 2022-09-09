@@ -40,7 +40,7 @@ exercise_csv_content = File.read('exercises.csv')
 # exercise_csv_content = CSV.read('exercises.csv')
 exercise_lines = exercise_csv_content.split("\n")
 
-exercises = []
+@exercises = []
 # [].find
 exercise_lines[1..-1].each do |line|
   row = line.split(",")
@@ -59,24 +59,30 @@ exercise_lines[1..-1].each do |line|
   end
   exercise_name = row[2]
   percentage_achieved = row[3]
-  exercises << Exersise.new(exer_student, exer_lecture, exercise_name, percentage_achieved)
+  @exercises << Exersise.new(exer_student, exer_lecture, exercise_name, percentage_achieved)
 end
 
-exercises[0..4].each do |exercise|
+@exercises[0..4].each do |exercise|
   exercise.print_info
 end
 
 # list the students sorted by number of exercises they submitted
-# def exercises_for_students(student)
-# []
-# end
-total_exercises = []
-students_sorted = students.sort_by do |student|
-  total_exercises = exercises.find_all { |ex| ex.exer_student.student_id == student.student_id }
-  -total_exercises.length
+
+def exercises_for_students(student)
+  @total_exercises = []
+  @exercises.each do |ex|
+    if ex.exer_student == student
+      @total_exercises << ex
+    end
+  end
+  @total_exercises
 end
 
+students_sorted = students.sort_by { |st| -exercises_for_students(st).length }
 
-students_sorted[0..9].each do |s|
-  puts "#{s.full_name}"
+students_sorted[0..19].each do |student|
+  exercises_for_students(student)
+  puts "#{students_sorted.find_index(student) + 1}. #{student.full_name} #{@total_exercises.length}"
 end
+
+# The lecture with the highest acarage percentage
