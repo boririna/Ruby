@@ -72,14 +72,29 @@ end
 
 students_sorted = students.sort_by { |st| -exercises_for_students(st).length }
 
-students_sorted[0..19].each do |student|
+students_sorted[0..9].each do |student|
   exercises_for_students(student)
   puts "#{students_sorted.find_index(student) + 1}. #{student.full_name} #{@total_exercises.length}"
 end
 
 # The lecture with the highest average percentage
-exer_by_lectures = []
+exercises_by_lecture = []
+lecture_percentage = []
 lectures.each do |lecture|
-  exer_by_lectures = @exercises.select { |exercise| exercise.exer_lec_id == lecture.lecture_id }
+  # puts lecture.title
+  exercises_by_lecture = @exercises.select { |exercise| exercise.exer_lec_id == lecture.lecture_id }
+  sum = 0
+  i = 0
+  exercises_by_lecture.each do |ex|
+    sum += ex.percentage_achieved.to_i
+    i += 1
+  end
+  if sum == 0
+    puts "#{lecture.lecture_id} average: #{sum}"
+  else
+    puts "#{lecture.lecture_id} average: #{sum / i}"
+  end
 end
-puts exer_by_lectures[0].exercise_name
+# exercises_by_lecture.each do |ex|
+#   puts "#{ex.exer_lec_id} #{ex.exercise_name} #{ex.percentage_achieved}"
+# end
