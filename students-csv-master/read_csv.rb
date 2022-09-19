@@ -1,15 +1,17 @@
+require 'csv'
 require_relative 'students'
 require_relative 'lectures'
 require_relative 'exercises'
 
-students_csv_content = File.read('students.csv')
-# puts students_csv_content
-student_lines = students_csv_content.split("\n")
+# students_csv_content = File.read('students.csv')
+# student_lines = students_csv_content.split("\n")
+
+students_csv_content = CSV.read('students.csv')
 
 students = []
 
-student_lines[1..-1].each do |line|
-  row = line.split(",")
+students_csv_content[1..-1].each do |row|
+  # row = line.split(",")
   student_id = row[0]
   full_name = row[1]
   students << Student.new(student_id, full_name)
@@ -19,31 +21,28 @@ students.each do |student|
   student.print_info
 end
 
-lectures_csv_content = File.read('lectures.csv')
-lecture_lines = lectures_csv_content.split("\n")
+lectures_csv_content = CSV.read('lectures.csv')
 
 lectures = []
 
-lecture_lines[1..-1].each do |line|
-  row = line.split(",")
+lectures_csv_content[1..-1].each do |row|
   lecture_id = row[0]
   title = row[1]
   level = row[2]
   lectures << Lecture.new(lecture_id, title, level)
 end
 
-lectures.each do |lecture|
+lectures[0..4].each do |lecture|
   lecture.print_info
 end
 
-exercise_csv_content = File.read('exercises.csv')
-# exercise_csv_content = CSV.read('exercises.csv')
-exercise_lines = exercise_csv_content.split("\n")
+exercise_csv_content = CSV.read('exercises.csv')
+# exercise_lines = exercise_csv_content.split("\n")
 
 @exercises = []
 # [].find
-exercise_lines[1..-1].each do |line|
-  row = line.split(",")
+exercise_csv_content[1..-1].each do |row|
+  # row = line.split(",")
   # exer_student = ""
   exer_student = students.find { |student| row[0] == student.student_id }
   # students.each do |student|
@@ -85,4 +84,4 @@ students_sorted[0..19].each do |student|
   puts "#{students_sorted.find_index(student) + 1}. #{student.full_name} #{@total_exercises.length}"
 end
 
-# The lecture with the highest acarage percentage
+# The lecture with the highest average percentage
