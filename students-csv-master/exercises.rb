@@ -10,6 +10,6 @@ class Exersise
   end
 
   def print_info
-    puts "The exercise #{@exercise_name} form the lecture #{@exer_lecture.title} is done by a student #{@exer_student.full_name} to a percentage #{@percentage_achieved}"
+    puts "#{@exercise_name} from the lecture #{@exer_lecture.title} is done by a student #{@exer_student.full_name} to a percentage of #{@percentage_achieved}%"
   end
 end

@@ -17,7 +17,7 @@ students_csv_content[1..-1].each do |row|
   students << Student.new(student_id, full_name)
 end
 
-students.each do |student|
+students[0..4].each do |student|
   student.print_info
 end
 
@@ -37,12 +37,10 @@ lectures[0..4].each do |lecture|
 end
 
 exercise_csv_content = CSV.read('exercises.csv')
-# exercise_lines = exercise_csv_content.split("\n")
 
 @exercises = []
-# [].find
+
 exercise_csv_content[1..-1].each do |row|
-  # row = line.split(",")
   # exer_student = ""
   exer_student = students.find { |student| row[0] == student.student_id }
   # students.each do |student|
@@ -50,12 +48,8 @@ exercise_csv_content[1..-1].each do |row|
   #     exer_student = student
   #   end
   # end
-  exer_lecture = ""
-  lectures.each do |lecture|
-    if row[1] == lecture.lecture_id
-      exer_lecture = lecture
-    end
-  end
+
+  exer_lecture = lectures.find { |lecture| row[1] == lecture.lecture_id }
   exercise_name = row[2]
   percentage_achieved = row[3]
   @exercises << Exersise.new(exer_student, exer_lecture, exercise_name, percentage_achieved)
@@ -66,7 +60,6 @@ end
 end
 
 # list the students sorted by number of exercises they submitted
-
 def exercises_for_students(student)
   @total_exercises = []
   @exercises.each do |ex|
@@ -85,3 +78,8 @@ students_sorted[0..19].each do |student|
 end
 
 # The lecture with the highest average percentage
+exer_by_lectures = []
+lectures.each do |lecture|
+  exer_by_lectures = @exercises.select { |exercise| exercise.exer_lec_id == lecture.lecture_id }
+end
+puts exer_by_lectures[0].exercise_name
