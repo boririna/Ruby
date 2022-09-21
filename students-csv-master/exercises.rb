@@ -1,5 +1,6 @@
 class Exersise
-  attr_reader :exer_st_id, :exer_lec_id, :exer_student, :exer_lecture,:exercise_name, :percentage_achieved
+  attr_reader :average_percentage, :exer_st_id, :exer_lec_id, :exer_student, :exer_lecture, :exercise_name, :percentage_achieved
+
   def initialize(exer_student, exer_lecture, exercise_name, percentage_achieved)
     @exer_student = exer_student
     @exer_lecture = exer_lecture

@@ -78,23 +78,33 @@ students_sorted[0..9].each do |student|
 end
 
 # The lecture with the highest average percentage
-exercises_by_lecture = []
-lecture_percentage = []
-lectures.each do |lecture|
-  # puts lecture.title
-  exercises_by_lecture = @exercises.select { |exercise| exercise.exer_lec_id == lecture.lecture_id }
-  sum = 0
-  i = 0
-  exercises_by_lecture.each do |ex|
-    sum += ex.percentage_achieved.to_i
-    i += 1
+# Make method for finding an average percentage for a lecture
+# Use this method when sorting by this average
+# Or loop through the lectures and find max and min average percentage
+def average_percent
+  exercises_by_lecture = []
+  average = 0
+  lectures.each do |lecture|
+    # puts lecture.title
+    exercises_by_lecture = @exercises.select { |exercise| exercise.exer_lec_id == lecture.lecture_id }
+    sum = 0
+    i = 0
+    exercises_by_lecture.each do |ex|
+      sum += ex.percentage_achieved.to_i
+      i += 1
+    end
+    if sum == 0
+      average = 0
+      # puts "#{lecture.lecture_id} average: #{sum}"
+    else
+      average = sum / i
+      # puts "#{lecture.lecture_id} average: #{sum / i}"
+    end
   end
-  if sum == 0
-    puts "#{lecture.lecture_id} average: #{sum}"
-  else
-    puts "#{lecture.lecture_id} average: #{sum / i}"
-  end
+  average
 end
+
+#  lectures.max {|a, b| a.average_percent <=> b.average_percent}
 # exercises_by_lecture.each do |ex|
 #   puts "#{ex.exer_lec_id} #{ex.exercise_name} #{ex.percentage_achieved}"
 # end
